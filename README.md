@@ -2,16 +2,17 @@
 #this repo include all the steps need to create and deploy mongodb along with opsmanager
 This is for RHEL 9. Have 50G space and 4 CPU. Typically t2.xlarge instance. 
 
-
 #any line starting with '#' is NOT a command
+
+#install git if you dont have already
+
+git clone https://github.com/gireesh-nv/mongodbrepo.git
 
 #untar the downloaded file
 
-
 tar -zxvf kube.tar.gz
 
-
-#Install Docker first. 
+#Download and install Docker first. 
 
 sudo dnf config-manager --add-repo https://download.docker.com/linux/rhel/docker-ce.repo
 sudo dnf install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
@@ -20,7 +21,6 @@ sudo systemctl start docker; sudo systemctl enable docker;
 #Install Docker Engine:
 
 sudo yum install -y docker-ce docker-ce-cli containerd.io
-
 
 #Start and enable Docker:
 
@@ -37,17 +37,14 @@ mv ./kind /usr/bin/kind
 curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 sudo install -o root -g root -m 0755 kubectl /usr/bin/kubectl
 
-#install git if missing
-yum install git
 
-#Install kind cluster
+#Download config file for kind cluster. This has one master and 2 worker nodes. 
 curl -Lo kind-config.yaml https://raw.githubusercontent.com/bhartiroshan/OpsManager/master/kind-config.yaml
 
 #create the kind cluster
 kind create cluster --config kind-config.yaml --retain --image "kindest/node:v1.21.14"
 
 kubectl cluster-info --context kind-kind
-git clone https://github.com/mongodb/mongodb-enterprise-kubernetes.git
 kubectl create namespace mongodb
 kubectl apply -f mongodb-enterprise-kubernetes/crds.yaml
 kubectl apply -f mongodb-enterprise-kubernetes/mongodb-enterprise.yaml
