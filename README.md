@@ -4,7 +4,11 @@ This is for RHEL 9. Have 50G space and 4 CPU. Typically t2.xlarge instance.
 #any line starting with '#' is NOT a command
 
 #untar the downloaded file
+
+
 tar -zxvf kube.tar.gz
+
+
 #Install Docker first. 
 
 sudo dnf config-manager --add-repo https://download.docker.com/linux/rhel/docker-ce.repo
